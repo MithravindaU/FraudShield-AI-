@@ -182,15 +182,15 @@ Feature Importance	Interpret model contributions
 
 
 ## 📘 Key Learnings
-Machine learning for fraud detection
-Working with highly imbalanced datasets
-Random Forest classification
-SMOTE-based oversampling
-Classification evaluation metrics
-Confusion matrix interpretation
-ROC curve analysis
-Feature importance analysis
-Model comparison
+-Machine learning for fraud detection
+-Working with highly imbalanced datasets
+-Random Forest classification
+-SMOTE-based oversampling
+-Classification evaluation metrics
+-Confusion matrix interpretation
+-ROC curve analysis
+-Feature importance analysis
+-Model comparison
 
 ---
 
@@ -216,26 +216,26 @@ The project also demonstrates how changing the class distribution with SMOTE can
 
 The project includes:
 
-Class distribution chart
-Transaction amount distribution
-Transaction time distribution
-Confusion matrix heatmaps
-ROC curve
-Before/after SMOTE comparison
-Model performance comparison
-Top 10 feature importance chart
+-Class distribution chart
+-Transaction amount distribution
+-Transaction time distribution
+-Confusion matrix heatmaps
+-ROC curve
+-Before/after SMOTE comparison
+-Model performance comparison
+-Top 10 feature importance chart
 
 ---
 ## 🔮 Future Improvements
-Hyperparameter tuning
-Cross-validation
-Threshold optimization
-Precision-Recall curve analysis
-Comparison with Logistic Regression and XGBoost
-Real-time transaction prediction
-Interactive fraud detection dashboard
-Model deployment using Streamlit
-Explainable AI using SHAP
+-Hyperparameter tuning
+-Cross-validation
+-Threshold optimization
+-Precision-Recall curve analysis
+-Comparison with Logistic Regression and XGBoost
+-Real-time transaction prediction
+-Interactive fraud detection dashboard
+-Model deployment using Streamlit
+-Explainable AI using SHAP
 
 
 ---
