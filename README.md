@@ -1,346 +1,257 @@
-# FraudShield AI | Credit Card Fraud Detection
+# 🛡️ FraudShield AI
+### Credit Card Fraud Detection Using Machine Learning
 
-A machine learning project that explores credit card fraud detection using a Random Forest classifier and SMOTE to address class imbalance.
+FraudShield AI is a machine learning project that detects potentially fraudulent credit card transactions using a **Random Forest classifier**. It explores how class imbalance affects fraud detection and evaluates whether **Synthetic Minority Over-sampling Technique (SMOTE)** can improve model performance.
 
-## Overview
+The project focuses on model evaluation, fraud detection metrics, and the trade-off between identifying fraudulent transactions and incorrectly flagging legitimate ones.
 
-Fraudulent transactions are rare compared with legitimate transactions, making fraud detection a challenging classification problem. A model can achieve high overall accuracy while still missing fraudulent transactions.
+## 📌 Project Overview
 
-**FraudShield AI** investigates this problem by comparing a Random Forest classifier before and after applying the Synthetic Minority Over-sampling Technique (SMOTE).
+Credit card fraud detection is a challenging classification problem because fraudulent transactions represent only a tiny fraction of all transactions. A model can achieve high accuracy simply by predicting most transactions as legitimate, while still missing fraud.
 
-The project focuses on:
-- Exploratory data analysis and data quality checks
-- Class imbalance analysis
-- Feature scaling and classification
-- SMOTE-based oversampling
-- Evaluation using precision, recall, F1-score and ROC-AUC
-- Confusion matrix analysis
-- Random Forest feature importance
+FraudShield AI addresses this challenge by comparing two approaches:
 
-> **Project scope:** This repository contains a notebook-based machine learning experiment. The reported metrics describe the evaluated models, not a production-ready banking fraud detection service.
+- **Baseline model:** Random Forest trained on the original imbalanced dataset.
+- **Resampled model:** Random Forest trained on the training data after applying SMOTE.
 
-## Project at a Glance
+Both models are evaluated using the same held-out test set.
 
-| Component | Details |
+## 🎯 Objectives
+
+- Explore and understand credit card transaction data.
+- Analyze class imbalance and missing or duplicate records.
+- Build a Random Forest classification model.
+- Apply SMOTE to address class imbalance in the training data.
+- Compare precision, recall, F1-score, and ROC-AUC.
+- Visualize model performance and feature importance.
+- Understand the trade-offs involved in fraud detection.
+
+## 🗂️ Dataset
+
+**Dataset:** Credit Card Fraud Detection
+
+The project uses a credit card transaction dataset containing anonymized transaction features and a binary target variable.
+
+| Property | Description |
 |---|---|
-| Problem | Credit card fraud detection |
-| Task | Binary classification |
-| Main classifier | Random Forest |
-| Imbalance technique | SMOTE |
-| Evaluation | Precision, recall, F1-score, ROC-AUC and confusion matrices |
-| Interpretability | Random Forest feature importance |
-| Language | Python |
-| Environment | Google Colab / Jupyter Notebook |
+| Total transactions | 284,807 |
+| Legitimate transactions | 284,315 |
+| Fraudulent transactions | 492 |
+| Total input columns | 30 |
+| Target column | `Class` |
+| Missing values | 0 reported |
 
-## Dataset
+The target variable is defined as:
 
-The project analyses credit card transaction data containing:
+- `Class = 0`: Legitimate transaction
+- `Class = 1`: Fraudulent transaction
 
-- Transaction time
-- Anonymized numerical features (`V1`–`V28`)
-- Transaction amount
-- Transaction class
+Fraudulent transactions account for approximately **0.173%** of the dataset, making this a highly imbalanced classification problem.
 
-### Target classes
+The dataset includes `Time`, `Amount`, and anonymized numerical features named `V1` through `V28`.
 
-| Class | Meaning |
-|---|---|
-| `0` | Normal transaction |
-| `1` | Fraudulent transaction |
+**Dataset source:** [Credit Card Fraud Detection on Kaggle](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
 
-### Class distribution
+The dataset is loaded from Google Drive in the Colab notebook. Download it separately and update the file path to match your environment. The dataset itself is not included in this repository.
 
-| Transaction class | Number of transactions | Percentage |
-|---|---:|---:|
-| Normal | 284,315 | 99.83% |
-| Fraud | 492 | 0.17% |
-| **Total** | **284,807** | **100%** |
+## 🧰 Technologies Used
 
-The substantial class imbalance makes recall, precision and other class-sensitive evaluation metrics particularly important.
+- Python
+- Google Colab
+- Pandas and NumPy
+- Matplotlib and Seaborn
+- Scikit-learn
+- Imbalanced-learn
+- Random Forest Classifier
+- SMOTE
 
-**Dataset note:** The dataset file is not included in the repository's listed files. Obtain the dataset from its original source, follow its terms of use, and configure the notebook to point to the downloaded CSV file.
+## ⚙️ Project Workflow
 
-## Methodology
+1. **Data loading:** Load the dataset from Google Drive using Pandas.
+2. **Exploratory data analysis:** Examine the dataset, class distribution, transaction amounts, and transaction times.
+3. **Data quality checks:** Inspect missing values and identify duplicate rows.
+4. **Feature preparation:** Separate the input features from the `Class` target variable and scale `Time` and `Amount`.
+5. **Train-test split:** Use an 80:20 split with stratification to preserve the class proportions.
+6. **Baseline training:** Train a Random Forest classifier on the original training data.
+7. **Class imbalance handling:** Apply SMOTE to the training data only.
+8. **Resampled model training:** Train a second Random Forest classifier on the resampled training set.
+9. **Model evaluation:** Compare classification reports, confusion matrices, ROC-AUC, and other metrics.
+10. **Visualization:** Generate ROC curves, model comparison plots, class distribution plots, and feature importance charts.
 
-### 1. Data loading and exploration
-
-The notebook examines the dataset to understand its structure and quality.
-
-Analysis includes:
-- Class distribution
-- Missing-value detection
-- Duplicate-row detection
-- Transaction amount distribution
-- Transaction time distribution
-
-The existing analysis reports **1,081 duplicate rows** and **no missing values in the analysed columns**.
-
-### 2. Preprocessing
-
-The workflow includes preparing the features and target, feature scaling, and splitting the data for model evaluation.
-
-### 3. Baseline model
-
-A Random Forest classifier is evaluated without SMOTE to establish a baseline for comparison.
-
-### 4. Class imbalance handling
-
-SMOTE generates synthetic minority-class examples to address the under-representation of fraudulent transactions.
-
-For a valid evaluation, SMOTE must be applied **only to the training data after the train-test split**. The test set should retain its original class distribution. Confirm this sequence in the notebook before treating the reported results as a final evaluation.
-
-### 5. Model evaluation
-
-The models are compared using:
-- **Precision:** How many transactions predicted as fraudulent were actually fraudulent?
-- **Recall:** How many actual fraudulent transactions did the model identify?
-- **F1-score:** A balance between precision and recall.
-- **ROC-AUC:** How well the model separates the two classes across classification thresholds.
-- **Confusion matrix:** The counts of correct and incorrect predictions.
-
-### 6. Feature importance
-
-Random Forest feature importance is used to identify which anonymized input features contributed most to the model's predictions.
-
-## Workflow
+### Workflow Diagram
 
 ```text
-Credit Card Transaction Dataset
-              |
-              v
-     Data Loading & EDA
-              |
-              v
-       Data Quality Checks
-              |
-              v
-     Feature Preparation
-              |
-              v
-        Train-Test Split
-              |
-              v
-    +---------------------+
-    | Random Forest       |
-    | Baseline Model      |
-    +---------------------+
-              |
-              v
-     Baseline Evaluation
-              |
-              v
-   SMOTE on Training Data*
-              |
-              v
-    +---------------------+
-    | Random Forest       |
-    | with SMOTE          |
-    +---------------------+
-              |
-              v
-    Compare Model Results
-              |
-              v
-    Feature Importance
+Credit Card Dataset
+        |
+        v
+Exploratory Data Analysis
+        |
+        v
+Feature Preparation
+        |
+        v
+Train-Test Split
+        |
+        +----------------------+
+        |                      |
+        v                      v
+Random Forest            Apply SMOTE
+(Baseline)               to Training Data
+        |                      |
+        v                      v
+Baseline Evaluation      Random Forest
+                         (SMOTE)
+                              |
+                              v
+                         Model Evaluation
+        |                      |
+        +----------+-----------+
+                   |
+                   v
+          Performance Comparison
+                   |
+                   v
+        Visualizations and Insights
 ```
 
-`*` Confirm that the notebook applies SMOTE to the training partition only.
+## 🤖 Models Implemented
 
-## Results
+### 1. Random Forest Classifier
 
-The repository reports the following model comparison:
+The baseline Random Forest model is trained on the original training dataset without oversampling.
 
-| Metric | Random Forest without SMOTE | Random Forest with SMOTE |
+### 2. Random Forest with SMOTE
+
+SMOTE generates synthetic examples of the minority class in the training data to reduce class imbalance. The resulting balanced training dataset is used to train a second Random Forest model.
+
+The test set remains unchanged for both evaluations.
+
+## 📊 Results
+
+The following results were reported by the current notebook before the preprocessing pipeline was corrected for data leakage. They are included to document the existing experiment and **should be regenerated before being treated as final results**.
+
+| Evaluation Metric | Random Forest | Random Forest + SMOTE |
 |---|---:|---:|
-| Precision | 0.941 | 0.845 |
-| Recall | 0.816 | 0.837 |
-| F1-score | 0.874 | 0.841 |
-| ROC-AUC | 0.963 | 0.973 |
+| Precision | 94.12% | 84.54% |
+| Recall | 81.63% | 83.67% |
+| F1-score | 87.43% | 84.10% |
+| ROC-AUC | 0.9630 | 0.9731 |
+| Fraud cases detected | 80 / 98 | 82 / 98 |
+| False positives | 5 | 15 |
 
-These are the values reported in the existing project README. They should be treated as reported results until the notebook's evaluation procedure has been verified.
+### Confusion Matrix Results
 
-### Confusion matrices
+**Random Forest**
 
-The matrices below use **actual classes as rows** and **predicted classes as columns**.
-
-**Random Forest without SMOTE**
-
-| Actual class | Predicted normal | Predicted fraud |
+| | Predicted Legitimate | Predicted Fraud |
 |---|---:|---:|
-| Normal | 56,859 | 5 |
-| Fraud | 18 | 80 |
+| Actually legitimate | 56,859 | 5 |
+| Actually fraud | 18 | 80 |
 
-**Random Forest with SMOTE**
+**Random Forest + SMOTE**
 
-| Actual class | Predicted normal | Predicted fraud |
+| | Predicted Legitimate | Predicted Fraud |
 |---|---:|---:|
-| Normal | 56,849 | 15 |
-| Fraud | 16 | 82 |
+| Actually legitimate | 56,849 | 15 |
+| Actually fraud | 16 | 82 |
 
-The test-set confusion matrices contain 98 actual fraudulent transactions in each evaluation.
+### Key Findings
 
-### What the results suggest
+- Both models detected most fraudulent transactions in the reported test results.
+- SMOTE increased fraud recall from approximately 81.63% to 83.67%.
+- The SMOTE model detected two additional fraudulent transactions out of 98.
+- False positives increased from 5 to 15, meaning more legitimate transactions were incorrectly flagged.
+- Precision and F1-score decreased after SMOTE, while ROC-AUC increased.
+- These results illustrate that improving fraud detection requires balancing missed fraud against unnecessary alerts.
 
-- **Fraud recall increased:** the reported value rose from approximately 81.63% to 83.67%.
-- **ROC-AUC improved:** the reported value rose from 0.963 to 0.973.
-- **Precision decreased:** the SMOTE model produced more false fraud predictions.
-- **F1-score decreased:** the reported balance between precision and recall was lower for the SMOTE model.
+**Important:** The notebook scales `Time` and `Amount` before splitting the dataset, allowing information from the test set to influence preprocessing. Fit the scaler on training data only, transform the test data separately, rerun the experiment, and replace these reported metrics with the corrected results before drawing final conclusions.
 
-SMOTE therefore did not improve every metric. The comparison illustrates the trade-off between identifying more fraudulent transactions and avoiding false alarms.
+## 📈 Visualizations
 
-## Feature Importance
+The notebook generates the following plots and analyses:
 
-The existing notebook results report the following top 10 Random Forest features:
-
-| Rank | Feature | Importance |
-|---:|---|---:|
-| 1 | `V14` | 0.1956 |
-| 2 | `V10` | 0.1105 |
-| 3 | `V4` | 0.1061 |
-| 4 | `V12` | 0.0951 |
-| 5 | `V17` | 0.0850 |
-| 6 | `V3` | 0.0605 |
-| 7 | `V11` | 0.0564 |
-| 8 | `V16` | 0.0438 |
-| 9 | `V2` | 0.0370 |
-| 10 | `V9` | 0.0262 |
-
-The `V` features are anonymized numerical variables. Their importance scores indicate their relative contribution to the fitted Random Forest model; they do not establish causation or explain the original meaning of those variables.
-
-## Visualizations
-
-The project notebook includes analysis and visualizations covering:
-
-- Class distribution
+- Class distribution of legitimate and fraudulent transactions
 - Transaction amount distribution
 - Transaction time distribution
-- Confusion matrix heatmaps
+- Confusion matrices
 - ROC curve
-- Before-and-after SMOTE comparison
-- Model performance comparison
-- Top 10 feature importance
+- Performance comparison between both models
+- Class distribution before and after SMOTE
+- Top 10 features ranked by Random Forest feature importance
 
-These visualizations support the model evaluation and help communicate the effects of class imbalance.
+The feature importance analysis reported `V14`, `V10`, `V4`, `V12`, and `V17` among the highest-ranked features in the SMOTE-trained Random Forest model.
 
-## Technologies Used
+Feature importance indicates how the fitted model uses features for its predictions. It does not establish that a feature causes fraud.
 
-| Technology | Purpose |
-|---|---|
-| Python | Main programming language |
-| Pandas | Data loading and manipulation |
-| NumPy | Numerical operations |
-| Scikit-learn | Model training and evaluation |
-| Imbalanced-learn | SMOTE implementation |
-| Matplotlib | Data visualization |
-| Seaborn | Statistical visualizations |
-| Google Colab / Jupyter | Notebook environment |
+## 🚀 Running the Project
 
-## Reproducibility
+### Option 1: Google Colab
 
-### Repository contents
+1. Open [Google Colab](https://colab.research.google.com/).
+2. Open the project notebook.
+3. Upload or connect your dataset to Google Drive.
+4. Update the dataset path if necessary.
+5. Run the notebook cells in order.
 
-- `Mlfrauddetection.ipynb` - Main machine learning notebook
-- `README.md` - Project documentation
-- PNG screenshots - Saved project visuals
+### Option 2: Local Python Environment
 
-### Run the notebook
+Install the required libraries:
 
-**Option 1: Google Colab**
+```bash
+pip install pandas numpy matplotlib seaborn scikit-learn imbalanced-learn jupyter
+```
 
-1. Open the repository and select `Mlfrauddetection.ipynb`.
-2. Download the notebook or open it in Google Colab.
-3. Obtain the dataset separately from its original source.
-4. Upload the dataset to your runtime or connect the storage location used by the notebook.
-5. Update the dataset path in the notebook to match your file location.
-6. Run the cells in order and review the evaluation outputs.
+Place `creditcard.csv` in your working directory and update the notebook's dataset-loading code to use the local file path.
 
-**Option 2: Local Jupyter environment**
+Start Jupyter Notebook:
 
-1. Clone the repository:
+```bash
+jupyter notebook
+```
 
-   ```bash
-   git clone https://github.com/MithravindaU/FraudShield-AI-.git
-   cd FraudShield-AI-
-   ```
+Open the notebook and execute its cells in order.
 
-2. Create and activate a virtual environment:
+The Google Colab-specific `drive.mount()` code is only needed when accessing the dataset through Google Drive.
 
-   ```bash
-   python -m venv .venv
-   ```
+## ⚠️ Limitations
 
-   Windows:
+- The dataset contains anonymized features, limiting direct interpretation of individual variables.
+- SMOTE does not guarantee better performance for every fraud detection problem.
+- The current notebook requires a preprocessing correction to prevent data leakage.
+- The experiment evaluates a single train-test split and does not establish performance on future transactions.
+- Default classification thresholds may not be optimal for real-world fraud detection.
+- The model is an educational prototype and has not been validated for live banking transactions.
 
-   ```powershell
-   .venv\Scripts\activate
-   ```
+## 🔮 Future Improvements
 
-   macOS / Linux:
+- Correct the preprocessing pipeline and regenerate all evaluation results.
+- Add a Precision-Recall curve and Average Precision score.
+- Compare additional classifiers, such as Logistic Regression and Gradient Boosting.
+- Tune the classification threshold using validation data.
+- Evaluate performance across multiple splits or cross-validation folds.
+- Explore model interpretability techniques such as SHAP.
+- Develop a simple interactive demonstration for testing sample transactions.
+- Investigate inference speed and monitoring requirements for a production-style system.
 
-   ```bash
-   source .venv/bin/activate
-   ```
+## 📚 Learning Outcomes
 
-3. Install the required libraries:
+Through this project, I explored:
 
-   ```bash
-   python -m pip install pandas numpy scikit-learn imbalanced-learn matplotlib seaborn jupyter
-   ```
+- The challenges of highly imbalanced classification.
+- Training and evaluating Random Forest models.
+- Applying SMOTE to training data.
+- Interpreting precision, recall, F1-score, ROC-AUC, and confusion matrices.
+- Comparing model performance using visualizations.
+- Understanding the importance of leakage-free preprocessing and reliable evaluation.
 
-4. Start Jupyter:
-
-   ```bash
-   jupyter notebook
-   ```
-
-5. Open `Mlfrauddetection.ipynb`, configure the dataset path, and execute the notebook cells in order.
-
-**Reproducibility note:** The commands above install the main libraries used by the project. Exact package versions, the original dataset download URL, and the notebook's file path should be documented or pinned once verified against the working environment.
-
-## Key Learnings
-
-This project explores:
-
-- Building a binary classification model with Random Forest
-- Working with highly imbalanced transaction data
-- Applying SMOTE to address minority-class under-representation
-- Interpreting precision, recall, F1-score and ROC-AUC
-- Reading confusion matrices to understand model errors
-- Comparing baseline and resampled model performance
-- Interpreting feature importance
-- Understanding why accuracy alone is insufficient for fraud detection
-
-## Limitations
-
-- The results depend on the dataset, train-test split and model configuration.
-- SMOTE can change the balance between fraud detection and false positives.
-- Anonymized features limit direct interpretation of the underlying transaction behaviour.
-- Feature importance does not establish causation.
-- The repository does not currently document a verified production deployment or real-time transaction pipeline.
-- The reported metrics should be rechecked after confirming the preprocessing sequence and ensuring that no information leaks from the test set into training.
-
-## Future Improvements
-
-Potential extensions include:
-
-- Verify the evaluation pipeline and prevent data leakage
-- Add stratified cross-validation
-- Tune model hyperparameters
-- Compare precision-recall curves and optimize the decision threshold
-- Compare Random Forest with Logistic Regression and other suitable classifiers
-- Add explainability with SHAP
-- Build an interactive results dashboard
-- Explore a carefully evaluated transaction-scoring interface
-
-These are proposed improvements, not features claimed to be implemented.
-
-## Author
+## 👩‍💻 Author
 
 **Mithravinda U**
 
-- GitHub: [@MithravindaU](https://github.com/MithravindaU)
-- Repository: [FraudShield AI](https://github.com/MithravindaU/FraudShield-AI-)
+B.Tech Artificial Intelligence and Data Science
+
+GitHub: [MithravindaU](https://github.com/MithravindaU)
 
 ---
 
-*FraudShield AI is an educational machine learning project. It is not a certified financial security product and should not be used to make real-world banking decisions without extensive validation, security review and monitoring.*
+*FraudShield AI is an educational machine learning project intended for experimentation and learning. It should not be used to make real financial decisions without extensive additional validation, testing, security controls, and monitoring.*
